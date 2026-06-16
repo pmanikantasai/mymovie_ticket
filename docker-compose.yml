@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: showtime_db
+    restart: always
+    environment:
+      POSTGRES_DB: showtime
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./server
+    container_name: showtime_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=django-insecure-bm-show-secret-key-123456789
+      - DEBUG=True
+      - ALLOWED_HOSTS=*,localhost,127.0.0.1,backend
+      - DB_NAME=showtime
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app
+
+  frontend:
+    build: ./client
+    container_name: showtime_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/
+      - VITE_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:

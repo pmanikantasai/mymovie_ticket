@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+media/
+qr_codes/
+tickets/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+
+# Environments & secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Editors/System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

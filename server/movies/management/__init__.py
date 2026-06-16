@@ -1,0 +1,1 @@
+# Movies management package initialization
